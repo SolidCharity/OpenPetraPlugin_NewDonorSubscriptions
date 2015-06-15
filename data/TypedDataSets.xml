@@ -1,0 +1,30 @@
+<PetraDataSets>
+  <ImportUnit name="Ict.Petra.Shared.MFinance.Gift.Data"/>
+
+    <DataSet name="NewDonorTDS">
+        <Table sqltable="a_gift">
+            <CustomField name="DonorShortName" type="string"/>
+            <CustomField name="RecipientDescription" type="string"/>
+            <CustomField name="DateOfSubscriptionStart" type="DateTime"/>
+            <CustomField name="DateOfFirstGift" type="DateTime"/>
+            <CustomField name="MotivationGroupCode" type="string"/>
+            <CustomField name="MotivationDetailCode" type="string"/>
+        </Table>
+        <CustomTable name="LetterRecipient">
+            <CustomField name="Name" type="string"/>
+            <CustomField name="PartnerKey" type="Int64"/>
+            <CustomField name="ValidAddress" type="Boolean"/>
+            <CustomField name="Email" type="string"/>
+            <CustomField name="Locality" type="string"/>
+            <CustomField name="StreetName" type="string"/>
+            <CustomField name="Building1" type="string"/>
+            <CustomField name="Building2" type="string"/>
+            <CustomField name="Address3" type="string"/>
+            <CustomField name="CountryCode" type="string"/>
+            <CustomField name="CountryName" type="string"/>
+            <CustomField name="PostalCode" type="string"/>
+            <CustomField name="City" type="string"/>
+        </CustomTable>
+    </DataSet>
+
+</PetraDataSets>
