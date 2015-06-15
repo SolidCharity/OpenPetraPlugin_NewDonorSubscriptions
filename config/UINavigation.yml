@@ -4,5 +4,5 @@ OpenPetra:
         Custom: {Label=Favoriten, Icon=partner.ico, DependsOnLedger=true}
             Favoriten: {DontShowNestedTasksAsLinks=true}
                 Spendenbuchhaltung: {Namespace=Ict.Petra.Client.MFinance.Gui.Gift, DontShowNestedTasksAsLinks=true}
-                        TreasurerNotification: {Description: "Briefe und Emails an Finanzminister", Namespace=Ict.Petra.Plugins.TreasurerNotification.Client, ActionOpenScreen=TFrmTreasurerNotification, Label="Treasurer Briefe", PermissionsRequired=FINANCE-1}
+                        NewDonorSubscriptions: {Description: "Briefe an Erstspender, mit Ankündigung der Zeitschrift", Namespace=Ict.Petra.Plugins.NewDonorSubscriptions.Client, ActionOpenScreen=TFrmGiftNewDonorLetter, Label="Erstspender Briefe", PermissionsRequired=FINANCE-1}
 
