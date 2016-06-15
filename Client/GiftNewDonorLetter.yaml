@@ -65,4 +65,4 @@
         tbbGenerateLetters:
         #tbbCreateExtract:
         tbbExportAddresses:
-        #tbbAddContactHistory:
+        tbbAddContactHistory:

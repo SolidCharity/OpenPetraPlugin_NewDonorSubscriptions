@@ -30,8 +30,10 @@ using System.IO;
 using GNU.Gettext;
 using Ict.Common;
 using Ict.Common.DB;
+using Ict.Common.IO;
 using Ict.Common.Data;
 using Ict.Common.Printing;
+using Ict.Petra.Shared;
 using Ict.Petra.Shared.MPartner.Partner.Data;
 using Ict.Petra.Shared.MCommon.Data;
 using Ict.Petra.Shared.MFinance.Gift.Data;
@@ -299,6 +301,78 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Server.WebConnectors
             }
 
             return Letters;
+        }
+
+        private static bool AddPartnerContact(string partnerkeys, string AContactAttributeCode, 
+                                       string AContactAttributeDetailCode, DateTime ATimeOfContact)
+        {
+            NameValueCollection parameters = new NameValueCollection();
+            parameters.Add("username", TAppSettingsManager.GetValue("Petra2x.Webservice.Username"));
+            parameters.Add("password", TAppSettingsManager.GetValue("Petra2x.Webservice.Password"));
+            parameters.Add("partnerkeys", partnerkeys);
+            parameters.Add("ContactCode", "FLETTER");
+            parameters.Add("ContactAttributeCode", AContactAttributeCode);
+            parameters.Add("ContactAttributeDetailCode", AContactAttributeDetailCode);
+            parameters.Add("ContactAttributeDetailDescr", AContactAttributeDetailCode);
+            parameters.Add("Contactor", UserInfo.GUserInfo.UserID);
+            parameters.Add("DateOfContact", ATimeOfContact.ToString("yyyy-MM-dd"));
+            parameters.Add("TimeOfContactInSeconds", ((ATimeOfContact.Hour*60+ATimeOfContact.Minute)*60+ATimeOfContact.Second).ToString());
+
+            string result = THTTPUtils.PostRequest(TAppSettingsManager.GetValue("Petra2x.Webservice.Url") + "/AddPartnerContacts", parameters);
+            int pos = result.IndexOf("<string");
+
+            if (pos > 0 && (pos = result.IndexOf(">", pos)) > 0)
+            {
+                result = result.Substring(pos + 1);
+                if ((pos = result.IndexOf("</string>")) > 0)
+                {
+                    result = result.Substring(0, pos).Trim();
+                }
+            }
+
+            if (result != "OK")
+            {
+                TLogging.Log("AddPartnerContact Error: " + result);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// add contact to each partner so that we know that a letter has been sent
+        /// </summary>
+        [RequireModulePermission("FINANCE-1")]
+        public static bool AddPartnerContact(List <Int64> APartnerKeys, 
+            string AContactAttributeCode,
+            string AContactAttributeDetailCode,
+            DateTime ATimeOfContact)
+        {
+            string spartnerkeys = String.Empty;
+
+            foreach (Int64 partnerkey in APartnerKeys)
+            {
+                spartnerkeys += partnerkey.ToString() + ",";
+                if (spartnerkeys.Length > 2000)
+                {
+                    if (!AddPartnerContact(spartnerkeys, AContactAttributeCode, AContactAttributeDetailCode, ATimeOfContact))
+                    {
+                        return false;
+                    }
+
+                    spartnerkeys = String.Empty;
+                }
+            }
+
+            if (spartnerkeys.Length > 0)
+            {
+                if (!AddPartnerContact(spartnerkeys, AContactAttributeCode, AContactAttributeDetailCode, ATimeOfContact))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

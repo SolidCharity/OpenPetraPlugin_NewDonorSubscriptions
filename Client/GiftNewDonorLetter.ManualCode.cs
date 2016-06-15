@@ -273,6 +273,12 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
             {
                 MessageBox.Show(Catalog.GetString("Address list has been stored"),
                     Catalog.GetString("Success"));
+
+                if (MessageBox.Show(Catalog.GetString("Should we store the contact details?"), Catalog.GetString("Question"),
+                                                      MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    AddContactHistory(ASender, AEv);
+                }
             }
         }
 
@@ -287,6 +293,17 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
                     partnerKeys.Add(row.PartnerKey);
                 }
             }
+
+            TMNewDonorSubscriptionsNamespace TRemote = new TMNewDonorSubscriptionsNamespace();
+            if (TRemote.Server.WebConnectors.AddPartnerContact(partnerKeys,
+                TAppSettingsManager.GetValue("NewDonorSubscriptions.AttributeGroupCode", "BEDANKUNG"),
+                TAppSettingsManager.GetValue("NewDonorSubscriptions.AttributeDetailCode", "ERSTSPENDER"),
+                DateTime.Now))
+            {
+                MessageBox.Show(Catalog.GetString("Partner Contact Details have been stored"),
+                                Catalog.GetString("Success"));
+            }
+
 #if TODO
             // No Mailing code, because this is a form letter
             TRemote.MPartner.Partner.WebConnectors.AddContact(partnerKeys,
