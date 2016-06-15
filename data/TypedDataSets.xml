@@ -12,6 +12,9 @@
         </Table>
         <CustomTable name="LetterRecipient">
             <CustomField name="Name" type="string"/>
+            <CustomField name="Title" type="string"/>
+            <CustomField name="Firstname" type="string"/>
+            <CustomField name="Surname" type="string"/>
             <CustomField name="PartnerKey" type="Int64"/>
             <CustomField name="ValidAddress" type="Boolean"/>
             <CustomField name="Email" type="string"/>

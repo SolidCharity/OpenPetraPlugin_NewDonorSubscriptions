@@ -14,6 +14,7 @@
     WindowHeight: 623
     Actions:
         actGenerateLetters: {Label=&Generate Letters, ActionClick=GenerateLetters}
+        actExportAddresses: {Label=Export &Addresses, ActionClick=ExportAddresses}
         actCreateExtract: {ActionClick=CreateExtract}
         actAddContactHistory: {ActionClick=AddContactHistory}
     Controls:
@@ -63,4 +64,5 @@
     Toolbar:
         tbbGenerateLetters:
         #tbbCreateExtract:
+        tbbExportAddresses:
         #tbbAddContactHistory:

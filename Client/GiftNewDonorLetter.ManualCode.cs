@@ -4,7 +4,7 @@
 // @Authors:
 //       timop
 //
-// Copyright 2004-2015 by OM International
+// Copyright 2004-2016 by OM International
 //
 // This file is part of OpenPetra.org.
 //
@@ -28,12 +28,14 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing.Printing;
+using System.Xml;
 using GNU.Gettext;
 using Ict.Common;
 using Ict.Common.Controls;
 using Ict.Common.Printing;
 using Ict.Common.Verification;
 using Ict.Common.Data;
+using Ict.Common.IO;
 using Ict.Petra.Client.CommonDialogs;
 using Ict.Petra.Client.App.Core.RemoteObjects;
 using Ict.Petra.Client.CommonControls;
@@ -201,6 +203,79 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
 #endif
         }
 
+        private void ExportAddresses(object ASender, EventArgs AEv)
+        {
+            if (FMainDS.LetterRecipient.Rows.Count == 0)
+            {
+                GenerateLetters(ASender, AEv);
+            }
+
+            XmlDocument doc = new XmlDocument();
+
+            XmlNode docNode = doc.CreateElement("NewDonorLetter");
+            doc.AppendChild(docNode);
+
+            foreach (NewDonorTDSLetterRecipientRow row in FMainDS.LetterRecipient.Rows)
+            {
+                if (row.ValidAddress)
+                {
+                    XmlNode addressNode = doc.CreateElement("address");
+                    XmlAttribute att = doc.CreateAttribute("PartnerKey");
+                    att.Value = row.PartnerKey.ToString();
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("Name");
+                    att.Value = row.Name;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("Title");
+                    att.Value = row.Title;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("FirstName");
+                    att.Value = row.Firstname;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("Surname");
+                    att.Value = row.Surname;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("Email");
+                    att.Value = row.Email;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("Locality");
+                    att.Value = row.Locality;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("StreetName");
+                    att.Value = row.StreetName;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("Building1");
+                    att.Value = row.Building1;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("Building2");
+                    att.Value = row.Building2;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("Address3");
+                    att.Value = row.Address3;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("PostalCode");
+                    att.Value = row.PostalCode;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("City");
+                    att.Value = row.City;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("CountryCode");
+                    att.Value = row.CountryCode;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("CountryName");
+                    att.Value = row.CountryName;
+                    addressNode.Attributes.Append(att);
+                    docNode.AppendChild(addressNode);
+                }
+            }
+
+            if (TImportExportDialogs.ExportWithDialog(doc, Catalog.GetString("Export addresses for mail merge"), "xlsx"))
+            {
+                MessageBox.Show(Catalog.GetString("Address list has been stored"),
+                    Catalog.GetString("Success"));
+            }
+        }
+
         private void AddContactHistory(object ASender, EventArgs AEv)
         {
             List <Int64>partnerKeys = new List <long>();
@@ -223,7 +298,7 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
 
             MessageBox.Show(Catalog.GetString("The partner contacts have been updated successfully!"),
                 Catalog.GetString("Success"));
-#endif            
+#endif
         }
     }
 }

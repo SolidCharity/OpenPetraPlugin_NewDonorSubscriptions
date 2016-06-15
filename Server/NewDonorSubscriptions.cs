@@ -4,7 +4,7 @@
 // @Authors:
 //       timop
 //
-// Copyright 2004-2015 by OM International
+// Copyright 2004-2016 by OM International
 //
 // This file is part of OpenPetra.org.
 //
@@ -105,6 +105,10 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Server.WebConnectors
                         rowCounter++;
                         NewDonorTDSLetterRecipientRow donor = MainDS.LetterRecipient.NewRowTyped();
                         donor.PartnerKey = row.DonorKey;
+                        donor.Name = row.DonorShortName;
+                        donor.Firstname = Calculations.FormatShortName(row.DonorShortName, eShortNameFormat.eOnlyFirstname);
+                        donor.Surname = Calculations.FormatShortName(row.DonorShortName, eShortNameFormat.eOnlySurname);
+                        donor.Title = Calculations.FormatShortName(row.DonorShortName, eShortNameFormat.eOnlyTitle);
                         MainDS.LetterRecipient.Rows.Add(donor);
                     }
 
