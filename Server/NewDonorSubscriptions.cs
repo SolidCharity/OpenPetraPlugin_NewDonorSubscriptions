@@ -60,6 +60,8 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Server.WebConnectors
             DateTime ASubscriptionStartFrom,
             DateTime ASubscriptionStartUntil,
             string AExtractName,
+            string AContactAttributeCode,
+            string AContactAttributeDetailCode,
             bool ADropForeignAddresses)
         {
             NewDonorTDS MainDS = new NewDonorTDS();
@@ -83,8 +85,14 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Server.WebConnectors
                 parameter = new OdbcParameter("EndDate", OdbcType.Date);
                 parameter.Value = ASubscriptionStartUntil;
                 parameters.Add(parameter);
-                parameter = new OdbcParameter("ExtractName", OdbcType.VarChar);
-                parameter.Value = AExtractName;
+                //parameter = new OdbcParameter("ExtractName", OdbcType.VarChar);
+                //parameter.Value = AExtractName;
+                //parameters.Add(parameter);
+                parameter = new OdbcParameter("ContactAttributeCode", OdbcType.VarChar);
+                parameter.Value = AContactAttributeCode;
+                parameters.Add(parameter);
+                parameter = new OdbcParameter("ContactAttributeDetailCode", OdbcType.VarChar);
+                parameter.Value = AContactAttributeDetailCode;
                 parameters.Add(parameter);
 
                 DBAccess.GDBAccessObj.Select(MainDS, stmt, MainDS.AGift.TableName, transaction, parameters.ToArray());

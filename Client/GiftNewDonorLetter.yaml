@@ -26,7 +26,7 @@
             Controls:
                 Row0: [dtpStartDate, dtpEndDate]
                 Row1: [cmbPublicationCode]
-                Row2: [txtExtract]
+#                Row2: [txtExtract]
                 Row3: [txtPathHTMLTemplate]
         sptResult:
             Dock: Fill
@@ -37,7 +37,7 @@
         dtpStartDate:
         dtpEndDate:
         cmbPublicationCode: {List=PublicationInfoList}
-        txtExtract: {NoLabel=true, Type=Extract}
+#        txtExtract: {NoLabel=true, Type=Extract}
         txtPathHTMLTemplate: {Width=400, Label=Pfad für die Serienbriefvorlage}
 #        pnlFilter:
 #            Controls: [rgrFilter]

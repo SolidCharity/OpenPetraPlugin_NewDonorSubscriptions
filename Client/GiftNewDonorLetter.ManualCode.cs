@@ -58,7 +58,7 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
 
             cmbPublicationCode.ColumnWidthCol3 = 0;
             cmbPublicationCode.Text = TAppSettingsManager.GetValue("NewDonorSubscriptions.Publication", true);
-            txtExtract.Text = TAppSettingsManager.GetValue("NewDonorSubscriptions.Extract", true);
+            //txtExtract.Text = TAppSettingsManager.GetValue("NewDonorSubscriptions.Extract", true);
             txtPathHTMLTemplate.Text = TAppSettingsManager.GetValue("NewDonorSubscriptions.HtmlTemplate", true);
         }
 
@@ -78,7 +78,9 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
             FMainDS = TRemote.Server.WebConnectors.GetNewDonorSubscriptions(
                 cmbPublicationCode.GetSelectedString(),
                 dtpStartDate.Date.Value, dtpEndDate.Date.Value,
-                txtExtract.Text,
+                string.Empty, // txtExtract.Text,
+                TAppSettingsManager.GetValue("NewDonorSubscriptions.AttributeGroupCode", "BEDANKUNG"),
+                TAppSettingsManager.GetValue("NewDonorSubscriptions.AttributeDetailCode", "ERSTSPENDER"),
                 true);
 
             if (FMainDS.LetterRecipient.Rows.Count == 0)
