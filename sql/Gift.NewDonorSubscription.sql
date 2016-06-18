@@ -34,9 +34,10 @@ AND PUB_a_gift_detail.a_detail_number_i = 1
 AND PUB_a_gift_detail.p_recipient_key_n = RecipientPartner.p_partner_key_n
 AND PUB_a_gift_batch.a_batch_status_c <> 'Cancelled'
 
-AND NOT EXISTS (SELECT * FROM PUB_p_partner_contact, PUB_p_partner_contact_attribute
+AND NOT EXISTS (SELECT * FROM PUB_p_partner_contact, PUB_p_contact_log, PUB_p_partner_contact_attribute
     WHERE PUB_p_partner_contact.p_partner_key_n  = PUB_p_partner.p_partner_key_n
-    AND PUB_p_partner_contact_attribute.p_contact_id_i = PUB_p_partner_contact.p_contact_id_i
+    AND PUB_p_partner_contact.p_contact_log_id_i = PUB_p_contact_log.p_contact_log_id_i
+    AND PUB_p_partner_contact_attribute.p_contact_id_i = PUB_p_partner_contact.p_contact_log_id_i
     AND PUB_p_partner_contact_attribute.p_contact_attribute_code_c = ?
     AND PUB_p_partner_contact_attribute.p_contact_attr_detail_code_c = ?)
 
