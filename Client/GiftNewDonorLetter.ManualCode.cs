@@ -221,12 +221,24 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
             {
                 if (row.ValidAddress)
                 {
+                    FMainDS.AGift.DefaultView.RowFilter = NewDonorTDSAGiftTable.GetDonorKeyDBName() + " = '" + row.PartnerKey.ToString() + "'";
+                    NewDonorTDSAGiftRow giftrow = (NewDonorTDSAGiftRow)FMainDS.AGift.DefaultView[0].Row;
+
                     XmlNode addressNode = doc.CreateElement("address");
                     XmlAttribute att = doc.CreateAttribute("PartnerKey");
                     att.Value = row.PartnerKey.ToString();
                     addressNode.Attributes.Append(att);
                     att = doc.CreateAttribute("Name");
                     att.Value = row.Name;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("Recipient");
+                    att.Value = giftrow.RecipientDescription;
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("DateOfFirstGift");
+                    att.Value = new TVariant(giftrow.DateOfFirstGift).EncodeToString();
+                    addressNode.Attributes.Append(att);
+                    att = doc.CreateAttribute("DateOfSubscriptionStart");
+                    att.Value = new TVariant(giftrow.DateOfSubscriptionStart).EncodeToString();
                     addressNode.Attributes.Append(att);
                     att = doc.CreateAttribute("Title");
                     att.Value = row.Title;
