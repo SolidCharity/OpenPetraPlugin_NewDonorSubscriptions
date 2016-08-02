@@ -59,7 +59,7 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
             cmbPublicationCode.ColumnWidthCol3 = 0;
             cmbPublicationCode.Text = TAppSettingsManager.GetValue("NewDonorSubscriptions.Publication", true);
             //txtExtract.Text = TAppSettingsManager.GetValue("NewDonorSubscriptions.Extract", true);
-            txtPathHTMLTemplate.Text = TAppSettingsManager.GetValue("NewDonorSubscriptions.HtmlTemplate", true);
+            //txtPathHTMLTemplate.Text = TAppSettingsManager.GetValue("NewDonorSubscriptions.HtmlTemplate", true);
         }
 
         private void FilterChanged(System.Object sender, EventArgs e)
@@ -114,6 +114,7 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
 
         private void PrintLetters()
         {
+#if Disabled
             string letterTemplateFilename = txtPathHTMLTemplate.Text;
 
             if (letterTemplateFilename == String.Empty)
@@ -186,6 +187,7 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
                     }
                 }
             }
+#endif
         }
 
         private void EndPrint(object ASender, PrintEventArgs AEv)
