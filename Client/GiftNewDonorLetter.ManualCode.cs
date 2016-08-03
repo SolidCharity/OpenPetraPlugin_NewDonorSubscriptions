@@ -60,6 +60,8 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
             cmbPublicationCode.Text = TAppSettingsManager.GetValue("NewDonorSubscriptions.Publication", true);
             //txtExtract.Text = TAppSettingsManager.GetValue("NewDonorSubscriptions.Extract", true);
             //txtPathHTMLTemplate.Text = TAppSettingsManager.GetValue("NewDonorSubscriptions.HtmlTemplate", true);
+            this.grdDonorDetails.Selection.FocusRowEntered -= new SourceGrid.RowEventHandler(this.FocusedRowChanged);
+            this.preLetters.Visible = false;
         }
 
         private void FilterChanged(System.Object sender, EventArgs e)
@@ -209,7 +211,8 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
 
         private void ExportAddresses(object ASender, EventArgs AEv)
         {
-            if (FMainDS.LetterRecipient.Rows.Count == 0)
+            // always generate new letters, perhaps the date has changed
+            if (true || FMainDS.LetterRecipient.Rows.Count == 0)
             {
                 GenerateLetters(ASender, AEv);
             }
@@ -223,8 +226,9 @@ namespace Ict.Petra.Plugins.NewDonorSubscriptions.Client
             {
                 if (row.ValidAddress)
                 {
-                    FMainDS.AGift.DefaultView.RowFilter = NewDonorTDSAGiftTable.GetDonorKeyDBName() + " = '" + row.PartnerKey.ToString() + "'";
-                    NewDonorTDSAGiftRow giftrow = (NewDonorTDSAGiftRow)FMainDS.AGift.DefaultView[0].Row;
+                    DataView dv = new DataView(FMainDS.AGift);
+                    dv.RowFilter = NewDonorTDSAGiftTable.GetDonorKeyDBName() + " = '" + row.PartnerKey.ToString() + "'";
+                    NewDonorTDSAGiftRow giftrow = (NewDonorTDSAGiftRow)dv[0].Row;
 
                     XmlNode addressNode = doc.CreateElement("address");
                     XmlAttribute att = doc.CreateAttribute("PartnerKey");
